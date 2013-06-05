@@ -1,0 +1,11 @@
+fixtures:
+  repositories:
+    apache: https://github.com/evenup/evenup-apache.git
+    backups: https://github.com/evenup/evenup-backups.git
+    beaver: https://github.com/evenup/evenup-beaver.git
+    concat: https://github.com/ripienaar/puppet-concat.git
+    logrotate: https://github.com/evenup/evenup-logrotate.git
+    ruby: https://github.com/evenup/evenup-ruby.git
+    stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
+  symlinks:
+    artifactory: "#{source_dir}"
