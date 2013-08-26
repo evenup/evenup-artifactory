@@ -13,11 +13,12 @@
 # Copyright 2013 EvenUp.
 #
 class artifactory::install(
-  $serverAlias
+  $ensure       = 'latest',
+  $serverAlias  = 'artifactory',
 ) {
 
   package { 'artifactory':
-    ensure  => latest,
+    ensure  => $ensure,
     notify  => Class['artifactory::service'],
   }
 
