@@ -34,6 +34,8 @@ class artifactory(
   $serverAlias  = 'artifactory',
 ) {
 
+  require 'java'
+
   class { 'artifactory::install':
     ensure      => $ensure,
     serverAlias => $serverAlias,

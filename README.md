@@ -6,6 +6,9 @@ Configuration of artifactory is mainly done through the app.  A define is
 also provided that will fetch artifacts from the repository aideing in
 application deployments.
 
+Note: Java is required for this module but I didn't add it to the Modulefile
+as a dependency since there are so many indivudalized java deployments.
+
 Backups are done through the backup rubygem.
 
 
