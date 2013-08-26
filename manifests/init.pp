@@ -5,6 +5,10 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   String.  Version of artifactory to be installed or latest/present
+#   Default: latest
+#
 # [*serverAlias*]
 #   String of comman seperated hostnames or array of hostnames.
 #   Default: artifactory
@@ -26,11 +30,13 @@
 # Copyright 2013 EvenUp.
 #
 class artifactory(
-  $serverAlias = 'artifactory'
+  $ensure       = 'latest',
+  $serverAlias  = 'artifactory',
 ) {
 
   class { 'artifactory::install':
-    serverAlias => $serverAlias
+    ensure      => $ensure,
+    serverAlias => $serverAlias,
   }
 
   class { 'artifactory::config': }
