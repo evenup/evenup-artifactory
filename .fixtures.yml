@@ -4,6 +4,7 @@ fixtures:
     backups: https://github.com/evenup/evenup-backups.git
     beaver: https://github.com/evenup/evenup-beaver.git
     concat: https://github.com/ripienaar/puppet-concat.git
+    java: https://github.com/evenup/evenup-java.git
     logrotate: https://github.com/evenup/evenup-logrotate.git
     ruby: https://github.com/evenup/evenup-ruby.git
     stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
