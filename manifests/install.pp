@@ -17,6 +17,10 @@ class artifactory::install(
   $serverAlias  = 'artifactory',
 ) {
 
+  File {
+    require => Package['artifactory'],
+  }
+
   package { 'artifactory':
     ensure  => $ensure,
     notify  => Class['artifactory::service'],
@@ -39,7 +43,6 @@ class artifactory::install(
   file { '/var/lib/artifactory/data':
     ensure  => link,
     target  => '/data/artifactory_data',
-    require => Package['artifactory'],
   }
 
   apache::vhost { 'artifactory_80':
