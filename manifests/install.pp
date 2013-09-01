@@ -42,14 +42,14 @@ class artifactory::install(
 
   file { '/data/artifactory_data':
     ensure  => directory,
-    mode    => 0775,
+    mode    => '0775',
     owner   => artifactory,
     group   => artifactory,
   }
 
   file { '/data/artifactory_backups':
     ensure  => directory,
-    mode    => 0775,
+    mode    => '0775',
     owner   => artifactory,
     group   => artifactory,
   }

@@ -18,7 +18,7 @@ class artifactory::config {
     ensure  => file,
     owner   => artifactory,
     group   => artifactory,
-    mode    => 0444,
+    mode    => '0444',
     source  => 'puppet:///modules/artifactory/server.xml',
     notify  => Class['artifactory::service'],
   }
