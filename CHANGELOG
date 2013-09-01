@@ -1,3 +1,4 @@
+  Update to artifactory 3x file layout
   Require java
   Ordering fixes
   Add ensure parameter for version
