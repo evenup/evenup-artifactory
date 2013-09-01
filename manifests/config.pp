@@ -14,7 +14,7 @@
 #
 class artifactory::config {
 
-  file { '/opt/artifactory/tomcat/conf/server.xml':
+  file { '/opt/jfrog/artifactory/tomcat/conf/server.xml':
     ensure  => file,
     owner   => artifactory,
     group   => artifactory,

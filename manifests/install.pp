@@ -21,9 +21,23 @@ class artifactory::install(
     require => Package['artifactory'],
   }
 
+  user { 'artifactory':
+    ensure  => 'present',
+    system  => true,
+    shell   => '/bin/bash',
+    home    => '/var/opt/jfrog/artifactory',
+    gid     => 'artifactory',
+  }
+
+  group { 'artifactory':
+    ensure  => 'present',
+    system  => true,
+  }
+
   package { 'artifactory':
     ensure  => $ensure,
     notify  => Class['artifactory::service'],
+    require => [ User['artifactory'], Group['artifactory'] ]
   }
 
   file { '/data/artifactory_data':
@@ -40,7 +54,7 @@ class artifactory::install(
     group   => artifactory,
   }
 
-  file { '/var/lib/artifactory/data':
+  file { '/var/opt/jfrog/artifactory/data':
     ensure  => link,
     target  => '/data/artifactory_data',
   }
