@@ -1,5 +1,5 @@
 name 'evenup-artifactory'
-version '0.10.2'
+version '1.0.0'
 author 'Justin Lambert <jlambert@letsevenup.com>'
 license 'Apache'
 project_page 'https://github.com/evenup/evenup-artifactory'
@@ -8,3 +8,4 @@ description 'This module installs the artifactory package, configures and manage
 dependency 'evenup/apache', '>= 2.0.0'
 dependency 'evenup/backups', '>= 1.1.0'
 dependency 'puppetlabs/stdlib'
+
