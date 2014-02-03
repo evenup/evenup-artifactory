@@ -12,10 +12,11 @@
 #
 # Copyright 2013 EvenUp.
 #
-class artifactory::install(
-  $ensure       = 'latest',
-  $serverAlias  = 'artifactory',
-) {
+class artifactory::install {
+
+  if $caller_module_name != $module_name {
+    fail("Use of private class ${name} by ${caller_module_name}")
+  }
 
   File {
     require => Package['artifactory'],
@@ -35,7 +36,7 @@ class artifactory::install(
   }
 
   package { 'artifactory':
-    ensure  => $ensure,
+    ensure  => $artifactory::ensure,
     notify  => Class['artifactory::service'],
     require => [ User['artifactory'], Group['artifactory'] ]
   }
@@ -61,7 +62,7 @@ class artifactory::install(
 
   apache::vhost { 'artifactory_80':
     serverName        => $::fqdn,
-    serverAlias       => $serverAlias,
+    serverAlias       => $artifactory::serverAlias,
     port              => '80',
     proxy             => true,
     proxyTomcat       => true,

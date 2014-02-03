@@ -36,10 +36,7 @@ class artifactory(
 
   require 'java'
 
-  class { 'artifactory::install':
-    ensure      => $ensure,
-    serverAlias => $serverAlias,
-  }
+  class { 'artifactory::install': }
 
   class { 'artifactory::config': }
 
