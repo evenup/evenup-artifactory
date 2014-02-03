@@ -14,6 +14,10 @@
 #
 class artifactory::config {
 
+  if $caller_module_name != $module_name {
+    fail("Use of private class ${name} by ${caller_module_name}")
+  }
+
   file { '/opt/jfrog/artifactory/tomcat/conf/server.xml':
     ensure  => file,
     owner   => artifactory,
