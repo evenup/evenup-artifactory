@@ -1,3 +1,5 @@
+v1.1.0:
+  Add source_file parameter to fetch_artifact
 v1.0.0:
   Update to artifactory 3x file layout
   Require java
