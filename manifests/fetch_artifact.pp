@@ -12,6 +12,7 @@
 #
 # [*format*]
 #   String.  What format of the artifact to fetch.
+#   Default: ''
 #
 # [*install_path*]
 #   String.  Where should the fetched file be installed at
@@ -31,6 +32,10 @@
 # [*filename*]
 #   String.  Filename that should be used for the fetched file
 #   Default: $project-$version.$format
+#
+# [*source_file*]
+#   String.  Source file name in project
+#   Default: ''
 #
 #
 # === Examples
@@ -55,20 +60,30 @@
 define artifactory::fetch_artifact (
   $project,
   $version,
-  $format,
   $install_path,
-  $path     = '',
-  $server   = hiera('artifactory::server', 'http://artifactory'),
-  $repo     = hiera('artifactory::repo', 'libs-release-local'),
-  $filename = ''
+  $format,
+  $path        = '',
+  $server      = hiera('artifactory::server', 'http://artifactory'),
+  $repo        = hiera('artifactory::repo', 'libs-release-local'),
+  $filename    = '',
+  $source_file = ''
 ){
+
+  if ( $source_file == '' and $format == '' ) {
+    fail('source_file or format is required')
+  }
+
+  $sourcefile_real = $source_file ? {
+    ''      => "${project}-${version}.${format}",
+    default => $source_file
+  }
 
   $filename_real = $filename ? {
     ''      => "${project}-${version}.${format}",
     default => $filename
   }
 
-  $fetch_url = "${server}/artifactory/${repo}/${path}/${project}/${version}/${project}-${version}.${format}"
+  $fetch_url = "${server}/artifactory/${repo}/${path}/${project}/${version}/${sourcefile_real}"
   $full_path = "${install_path}/${filename_real}"
 
   exec { "artifactory_fetch_${name}":
