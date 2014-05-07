@@ -68,7 +68,7 @@ class artifactory::install {
     proxyTomcat       => true,
     ajpPort           => 8091,
     modSecOverrides   => true,
-    modSecRemoveById  => [ '950901', '960024', '960010', '960015', '960020', '973332', '973333', '981173', '981243' ],
+    modSecRemoveById  => [ '950901', '960009', '960010', '960024', '960015', '960020', '973332', '973333', '981173', '981243' ],
     modSecBodyLimit   => 524288000,
     logstash          => true,
   }
