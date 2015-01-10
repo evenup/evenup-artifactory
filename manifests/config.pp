@@ -19,12 +19,12 @@ class artifactory::config {
   }
 
   file { '/opt/jfrog/artifactory/tomcat/conf/server.xml':
-    ensure  => file,
-    owner   => artifactory,
-    group   => artifactory,
-    mode    => '0444',
-    source  => 'puppet:///modules/artifactory/server.xml',
-    notify  => Class['artifactory::service'],
+    ensure => file,
+    owner  => artifactory,
+    group  => artifactory,
+    mode   => '0444',
+    source => 'puppet:///modules/artifactory/server.xml',
+    notify => Class['artifactory::service'],
   }
 
 }

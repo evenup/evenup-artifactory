@@ -1,0 +1,19 @@
+{
+  "name": "evenup-artifactory",
+  "version": "1.1.2",
+  "author": "Justin Lambert <jlambert@letsevenup.com>",
+  "license": "Apache-2.0",
+  "summary": "Installs the artifactory service and fetches artifacts from the repo",
+  "source": "https://github.com/evenup/evenup-artifactory",
+  "project_page": "https://github.com/evenup/evenup-artifactory",
+  "issues_url": "https://github.com/evenup/evenup-artifactory/issues",
+  "tags": ["artifactory"],
+  "operatingsystem_support": [
+    { "operatingsystem": "RedHat", "operatingsystemmajrelease": [ "6", "7" ] },
+    { "operatingsystem": "CentOS", "operatingsystemmajrelease": [ "6", "7" ] }
+   ],
+  "dependencies": [
+    { "name": "puppetlabs/apache", "version_requirement": ">=1.2.0 <2.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" }
+  ]
+}
