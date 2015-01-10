@@ -19,8 +19,8 @@ class artifactory::service {
   }
 
   service { 'artifactory':
-    ensure  => running,
-    enable  => true,
+    ensure => running,
+    enable => true,
   }
 
 }

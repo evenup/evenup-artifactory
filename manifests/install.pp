@@ -23,16 +23,16 @@ class artifactory::install {
   }
 
   user { 'artifactory':
-    ensure  => 'present',
-    system  => true,
-    shell   => '/bin/bash',
-    home    => '/var/opt/jfrog/artifactory',
-    gid     => 'artifactory',
+    ensure => 'present',
+    system => true,
+    shell  => '/bin/bash',
+    home   => '/var/opt/jfrog/artifactory',
+    gid    => 'artifactory',
   }
 
   group { 'artifactory':
-    ensure  => 'present',
-    system  => true,
+    ensure => 'present',
+    system => true,
   }
 
   package { 'artifactory':
@@ -42,43 +42,22 @@ class artifactory::install {
   }
 
   file { '/data/artifactory_data':
-    ensure  => directory,
-    mode    => '0775',
-    owner   => artifactory,
-    group   => artifactory,
+    ensure => directory,
+    mode   => '0775',
+    owner  => artifactory,
+    group  => artifactory,
   }
 
   file { '/data/artifactory_backups':
-    ensure  => directory,
-    mode    => '0775',
-    owner   => artifactory,
-    group   => artifactory,
+    ensure => directory,
+    mode   => '0775',
+    owner  => artifactory,
+    group  => artifactory,
   }
 
   file { '/var/opt/jfrog/artifactory/data':
-    ensure  => link,
-    target  => '/data/artifactory_data',
-  }
-
-  apache::vhost { 'artifactory_80':
-    serverName        => $::fqdn,
-    serverAlias       => $artifactory::serverAlias,
-    port              => '80',
-    proxy             => true,
-    proxyTomcat       => true,
-    ajpPort           => 8091,
-    modSecOverrides   => true,
-    modSecRemoveById  => [ '950901', '960009', '960010', '960024', '960015', '960020', '973332', '973333', '981173', '981243' ],
-    modSecBodyLimit   => 524288000,
-    logstash          => true,
-  }
-
-  backups::archive { 'artifactory':
-    path      => '/data/artifactory_backups',
-    hour      => 6,
-    minute    => 10,
-    keep      => 7,
-    tmp_path  => '/data/tmp';
+    ensure => link,
+    target => '/data/artifactory_data',
   }
 
 }
