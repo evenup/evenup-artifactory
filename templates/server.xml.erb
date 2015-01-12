@@ -6,7 +6,7 @@
         <Connector port="8081"/>
 
         <!-- This is the optional AJP connector -->
-        <Connector port="8091" protocol="AJP/1.3"/>
+        <Connector port="<%= @ajp_port %>" protocol="AJP/1.3"/>
 
         <Engine name="Catalina" defaultHost="localhost">
             <Host name="localhost" appBase="webapps"/>
