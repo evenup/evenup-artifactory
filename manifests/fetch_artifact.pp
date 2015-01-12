@@ -53,18 +53,14 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-# === Copyright
-#
-# Copyright 2013 EvenUp.
-#
 define artifactory::fetch_artifact (
   $project,
   $version,
   $install_path,
   $format,
   $path        = '',
-  $server      = hiera('artifactory::server', 'http://artifactory'),
-  $repo        = hiera('artifactory::repo', 'libs-release-local'),
+  $server      = 'http://artifactory',
+  $repo        = 'libs-release-local',
   $filename    = '',
   $source_file = ''
 ){

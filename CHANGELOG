@@ -1,4 +1,8 @@
-  Update apache dependency to puppetlabs/apache
+  Remove apache configuration
+  Remove backup job
+  Allow configuring AJP port
+  Add optional data dir configuration
+  Add optional backup dir creation
 20140507 - v1.1.2
   Add version to stdlib
 20140507 - v1.1.1

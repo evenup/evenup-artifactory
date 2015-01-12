@@ -7,11 +7,6 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-#
-# === Copyright
-#
-# Copyright 2013 EvenUp.
-#
 class artifactory::service {
 
   if $caller_module_name != $module_name {
@@ -19,8 +14,9 @@ class artifactory::service {
   }
 
   service { 'artifactory':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
+    require => Class['java'],
   }
 
 }

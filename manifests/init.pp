@@ -24,32 +24,21 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-#
-# === Copyright
-#
-# Copyright 2013 EvenUp.
-#
 class artifactory(
-  $ensure       = 'latest',
-  $serverAlias  = 'artifactory',
+  $ensure           = 'latest',
+  $package_provider = undef,
+  $package_source   = undef,
+  $ajp_port         = 8019,
+  $data_path        = '/var/opt/jfrog/artifactory/data',
+  $backup_path      = undef,
 ) {
 
-  require 'java'
+  include 'java'
 
-  class { 'artifactory::install': }
-
-  class { 'artifactory::config': }
-
-  class { 'artifactory::service': }
-
-  # Containment
-  anchor { 'artifactory::begin': }
+  anchor { 'artifactory::begin': } ->
+  class { 'artifactory::install': } ->
+  class { 'artifactory::config': } ->
+  class { 'artifactory::service': } ->
   anchor { 'artifactory::end': }
-
-  Anchor['artifactory::begin'] ->
-  Class['artifactory::install'] ->
-  Class['artifactory::config'] ->
-  Class['artifactory::service'] ->
-  Anchor['artifactory::end']
 
 }

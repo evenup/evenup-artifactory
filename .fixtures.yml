@@ -1,6 +1,5 @@
 fixtures:
   repositories:
-    apache: https://github.com/puppetlabs/puppetlabs-apache.git
     stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
   symlinks:
     artifactory: "#{source_dir}"

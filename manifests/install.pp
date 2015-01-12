@@ -7,11 +7,6 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-#
-# === Copyright
-#
-# Copyright 2013 EvenUp.
-#
 class artifactory::install {
 
   if $caller_module_name != $module_name {
@@ -36,28 +31,34 @@ class artifactory::install {
   }
 
   package { 'artifactory':
-    ensure  => $artifactory::ensure,
-    notify  => Class['artifactory::service'],
-    require => [ User['artifactory'], Group['artifactory'] ]
+    ensure   => $::artifactory::ensure,
+    provider => $::artifactory::package_provider,
+    source   => $::artifactory::package_source,
+    notify   => Class['artifactory::service'],
+    require  => [ User['artifactory'], Group['artifactory'] ]
   }
 
-  file { '/data/artifactory_data':
-    ensure => directory,
-    mode   => '0775',
-    owner  => artifactory,
-    group  => artifactory,
+  if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' {
+    file { $::artifactory::data_path:
+      ensure => directory,
+      mode   => '0775',
+      owner  => artifactory,
+      group  => artifactory,
+    }
+
+    file { '/var/opt/jfrog/artifactory/data':
+      ensure => link,
+      target => $::artifactory::data_path,
+    }
   }
 
-  file { '/data/artifactory_backups':
-    ensure => directory,
-    mode   => '0775',
-    owner  => artifactory,
-    group  => artifactory,
-  }
-
-  file { '/var/opt/jfrog/artifactory/data':
-    ensure => link,
-    target => '/data/artifactory_data',
+  if $::artifactory::backup_path {
+    file { $::artifactory::backup_path:
+      ensure => directory,
+      mode   => '0775',
+      owner  => artifactory,
+      group  => artifactory,
+    }
   }
 
 }
