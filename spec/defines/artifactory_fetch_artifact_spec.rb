@@ -48,7 +48,7 @@ describe 'artifactory::fetch_artifact', :type => :define do
 
     it { should contain_exec('artifactory_fetch_myproject').with(
       'creates' => '/somewhere/foo-1.2.3.war',
-      'command' => "curl -o /somewhere/foo-1.2.3.war http://server1/artifactory/test//foo/1.2.3/foo-1.2.3.war"
+      'command' => "curl -o /somewhere/foo-1.2.3.war http://server1/artifactory/test/foo/1.2.3/foo-1.2.3.war"
     ) }
   end
 
@@ -65,7 +65,7 @@ describe 'artifactory::fetch_artifact', :type => :define do
 
     it { should contain_exec('artifactory_fetch_myproject').with(
       'creates' => '/somewhere/foo-1.2.3.war',
-      'command' => "curl -o /somewhere/foo-1.2.3.war http://server1/artifactory/test//foo/1.2.3/bar-2.3.4-all.war"
+      'command' => "curl -o /somewhere/foo-1.2.3.war http://server1/artifactory/test/foo/1.2.3/bar-2.3.4-all.war"
     ) }
 
   end

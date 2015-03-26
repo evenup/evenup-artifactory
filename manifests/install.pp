@@ -35,7 +35,7 @@ class artifactory::install {
     provider => $::artifactory::package_provider,
     source   => $::artifactory::package_source,
     notify   => Class['artifactory::service'],
-    require  => [ User['artifactory'], Group['artifactory'] ]
+    require  => [ User['artifactory'], Group['artifactory'] ],
   }
 
   if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' {
