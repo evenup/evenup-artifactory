@@ -33,12 +33,10 @@ class artifactory(
   $backup_path      = undef,
 ) {
 
-  include 'java'
+  include ::java
 
-  anchor { 'artifactory::begin': } ->
-  class { 'artifactory::install': } ->
-  class { 'artifactory::config': } ->
-  class { 'artifactory::service': } ->
-  anchor { 'artifactory::end': }
+  class { '::artifactory::install': } ->
+  class { '::artifactory::config': } ->
+  class { '::artifactory::service': }
 
 }
