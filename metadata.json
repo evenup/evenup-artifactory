@@ -1,6 +1,6 @@
 {
   "name": "evenup-artifactory",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "author": "Justin Lambert <jlambert@letsevenup.com>",
   "license": "Apache-2.0",
   "summary": "Installs the artifactory service and fetches artifacts from the repo",
