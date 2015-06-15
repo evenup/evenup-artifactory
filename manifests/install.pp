@@ -13,10 +13,6 @@ class artifactory::install {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  File {
-    require => Package['artifactory'],
-  }
-
   user { 'artifactory':
     ensure => 'present',
     system => true,
