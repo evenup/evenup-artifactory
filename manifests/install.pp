@@ -7,7 +7,7 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-class artifactory::install {
+class artifactory::install inherits artifactory::params {
 
   if $caller_module_name != $module_name {
     fail("Use of private class ${name} by ${caller_module_name}")
@@ -17,7 +17,7 @@ class artifactory::install {
     ensure => 'present',
     system => true,
     shell  => '/bin/bash',
-    home   => '/var/opt/jfrog/artifactory',
+    home   => $::artifactory::params::std_user_home,
     gid    => 'artifactory',
   }
 
@@ -34,7 +34,7 @@ class artifactory::install {
     require  => [ User['artifactory'], Group['artifactory'] ],
   }
 
-  if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' {
+  if $::artifactory::data_path != $::artifactory::params::std_data_path {
     file { $::artifactory::data_path:
       ensure => directory,
       mode   => '0775',
@@ -42,7 +42,7 @@ class artifactory::install {
       group  => artifactory,
     }
 
-    file { '/var/opt/jfrog/artifactory/data':
+    file { $::artifactory::params::std_data_path:
       ensure => link,
       target => $::artifactory::data_path,
     }

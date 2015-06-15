@@ -29,9 +29,9 @@ class artifactory(
   $package_provider = undef,
   $package_source   = undef,
   $ajp_port         = 8019,
-  $data_path        = '/var/opt/jfrog/artifactory/data',
+  $data_path        = $::artifactory::params::std_data_path,
   $backup_path      = undef,
-) {
+) inherits artifactory::params {
 
   include ::java
 
