@@ -42,8 +42,6 @@ class artifactory(
   $docker_img       = 'oss',
 ) inherits artifactory::params {
 
-  include ::java
-
   validate_re($install_type, '^(package|docker)$',
     "artifactory::install_type must be (package/docker) - not '${install_type}'")
 

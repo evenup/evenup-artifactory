@@ -15,6 +15,8 @@ class artifactory::package::config (
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
+  include ::java
+
   file { '/opt/jfrog/artifactory/tomcat/conf/server.xml':
     ensure  => file,
     owner   => artifactory,
