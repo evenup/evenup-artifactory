@@ -1,4 +1,4 @@
-# == Class: artifactory::config
+# == Class: artifactory::package::config
 #
 # This class configures artifactory.  It should not be called directly
 #
@@ -7,7 +7,7 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-class artifactory::config (
+class artifactory::package::config (
   $ajp_port = $::artifactory::ajp_port,
 ){
 
@@ -21,7 +21,7 @@ class artifactory::config (
     group   => artifactory,
     mode    => '0444',
     content => template('artifactory/server.xml.erb'),
-    notify  => Class['artifactory::service'],
+    notify  => Class['artifactory::package::service'],
   }
 
 }

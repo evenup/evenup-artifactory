@@ -31,12 +31,17 @@ class artifactory(
   $ajp_port         = 8019,
   $data_path        = $::artifactory::params::std_data_path,
   $backup_path      = undef,
+  $install_type     = 'package',
+  $docker_img_type  = 'oss',
 ) inherits artifactory::params {
 
   include ::java
 
-  class { '::artifactory::install': } ->
-  class { '::artifactory::config': } ->
-  class { '::artifactory::service': }
+  validate_re($install_type, '^(package)$',
+    "artifactory::install_type must be 'package' - not '${install_type}'")
+
+  class { "::artifactory::${install_type}::install": } ->
+  class { "::artifactory::${install_type}::config": } ->
+  class { "::artifactory::${install_type}::service": }
 
 }

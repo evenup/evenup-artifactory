@@ -1,4 +1,4 @@
-# == Class: artifactory::install
+# == Class: artifactory::package::install
 #
 # This class installs artifactory.  It should not be called directly
 #
@@ -7,7 +7,7 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-class artifactory::install inherits artifactory::params {
+class artifactory::package::install inherits artifactory::params {
 
   if $caller_module_name != $module_name {
     fail("Use of private class ${name} by ${caller_module_name}")
@@ -30,7 +30,7 @@ class artifactory::install inherits artifactory::params {
     ensure   => $::artifactory::ensure,
     provider => $::artifactory::package_provider,
     source   => $::artifactory::package_source,
-    notify   => Class['artifactory::service'],
+    notify   => Class['artifactory::package::service'],
     require  => [ User['artifactory'], Group['artifactory'] ],
   }
 

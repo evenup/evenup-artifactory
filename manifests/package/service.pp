@@ -1,4 +1,4 @@
-# == Class: artifactory::service
+# == Class: artifactory::package::service
 #
 # This class manages the artifactory service.  It should not be called directly
 #
@@ -7,7 +7,7 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-class artifactory::service {
+class artifactory::package::service {
 
   if $caller_module_name != $module_name {
     fail("Use of private class ${name} by ${caller_module_name}")
