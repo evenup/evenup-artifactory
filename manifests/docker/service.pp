@@ -46,6 +46,7 @@ class artifactory::docker::service inherits artifactory::params {
     ports             => [ '80:80', '8081:8081', '443:443', '5001:5001', '5002:5002', ],
     volumes           => $volume_mounts,
     extra_parameters  => ['--restart=always'],
+    tag               => 'artifactory_service',
   }
 
 }

@@ -17,6 +17,7 @@ class artifactory::package::service {
     ensure  => running,
     enable  => true,
     require => Class['java'],
+    tag     => 'artifactory_service'
   }
 
 }
