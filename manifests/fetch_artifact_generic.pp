@@ -1,18 +1,8 @@
-# == Definition: artifactory::fetch_artifact
+# == Definition: artifactory::fetch_artifact_generic
 #
 # This define fetches a specific artifact from artifactory
 #
 # === Parameters
-#
-# [*project*]
-#   String.  The name of the artifactory project
-#
-# [*version*]
-#   String.  Which version to fetch
-#
-# [*format*]
-#   String.  What format of the artifact to fetch.
-#   Default: ''
 #
 # [*install_path*]
 #   String.  Where should the fetched file be installed at
@@ -51,41 +41,51 @@
 #
 # === Authors
 #
-# * Justin Lambert <mailto:jlambert@letsevenup.com>
+# * Artem Popenkov <mailto:artem.popenkov@concur.com>
 #
-define artifactory::fetch_artifact (
-  $project,
-  $version,
+define artifactory::fetch_artifact_generic(
   $install_path,
-  $format,
-  $path        = '',
-  $server      = 'http://artifactory',
+  $base_path   = 'http://artifactory/artifactory',
   $repo        = 'libs-release-local',
   $filename    = '',
-  $source_file = ''
+  $source_file,
+  $layout,
 ){
 
-  if ( $source_file == '' and $format == '' ) {
-    fail('source_file or format is required')
+  if ( $source_file == '') {
+    fail('source_file is required')
   }
 
-  $sourcefile_real = $source_file ? {
-    ''      => "${project}-${version}.${format}",
-    default => $source_file
-  }
-
+# Use source file if filename is not specified
   $filename_real = $filename ? {
-    ''      => "${project}-${version}.${format}",
+    ''      => $source_file,
     default => $filename
   }
 
-  artifactory::fetch_artifact_generic {"fetch_artifact_generic_${name}":
-    install_path => $install_path,
-    base_path => "${server}/artifactory",
-    repo => $repo,
-    filename => $filename_real,
-    source_file => $sourcefile_real,
-    layout => "${path}/${project}/${version}"
+  $fetch_url = "${base_path}/${repo}/${layout}/${source_file}"
+  $full_path = "${install_path}/${filename_real}"
+
+  $logoutput = on_failure
+
+  case $osfamily {
+    windows: {
+      $command = "Import-Module BitsTransfer; Start-BitsTransfer -Source ${fetch_url} -Destination ${install_path}"
+      $provider = powershell
+      $path = ''
+    }
+    default:{
+      $command = "curl -o ${full_path} ${fetch_url}"
+      $provider = shell
+      $path = '/usr/bin:/bin'
+    }
   }
 
+  exec{"artifactory_fetch_${name}":
+    command => $command,
+    cwd       => $install_path,
+    creates => $full_path,
+    provider => $provider,
+    path => $path,
+    logoutput => $logoutput,
+  }
 }
