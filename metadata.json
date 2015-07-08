@@ -10,7 +10,8 @@
   "tags": ["artifactory"],
   "operatingsystem_support": [
     { "operatingsystem": "RedHat", "operatingsystemmajrelease": [ "6", "7" ] },
-    { "operatingsystem": "CentOS", "operatingsystemmajrelease": [ "6", "7" ] }
+    { "operatingsystem": "CentOS", "operatingsystemmajrelease": [ "6", "7" ] },
+    { "operatingsystem": "Windows", "operatingsystemmajrelease": [ "7", "2012" ] }
    ],
   "dependencies": [
     { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" }
