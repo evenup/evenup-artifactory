@@ -7,13 +7,9 @@
 # [*install_path*]
 #   String.  Where should the fetched file be installed at
 #
-# [*path*]
-#   String.  Additional path needed to locate the artifact
-#   Default: empty
-#
-# [*server*]
-#   String.  Name (and protocol) of the artifactory server
-#   Default: http://artifactory
+# [*base_path*]
+#   String.  Full path to artifactory repository
+#   Default: 'http://artifactory/artifactory'
 #
 # [*repo*]
 #   String.  Name of the repository that holds this artifact
@@ -27,15 +23,18 @@
 #   String.  Source file name in project
 #   Default: ''
 #
+# [*layout]
+#   Path to fetch file inside arifactory
 #
 # === Examples
 #
 #   artifactory::fetch_artifact { 'mywar':
-#     project       => 'myproject',
-#     version       => '1.2.3',
-#     format        => 'war',
 #     install_path  => '/data/tomcat/site',
-#     filename      => 'myproject-1.2.3-war'
+#     base_path     => 'http://myhost/myartifactory',
+#     repo          => 'mysimplerepo',
+#     filename      => 'myproject-1.2.3.war',
+#     source_file   => 'myproject.war',
+#     layout        => 'myteam/myproject/1.2.3/foo'
 #   }
 #
 #

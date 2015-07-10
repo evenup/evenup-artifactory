@@ -32,6 +32,16 @@ Fetching an artifact:
     filename      => 'myproject-1.2.3-war'
   }
 </pre>
+<pre>
+  artifactory::fetch_artifact { 'mywar':
+    install_path  => '/data/tomcat/site',
+    base_path     => 'http://myhost/myartifactory',
+    repo          => 'mysimplerepo',
+    filename      => 'myproject-1.2.3.war',
+    source_file   => 'myproject.war',
+    layout        => 'myteam/myproject/1.2.3/foo'
+  }
+</pre>
 This will fetch a war of version 1.2.3 of myproject and store it as
 /data/tomcat/site/myproject-1.2.3-war.
 
