@@ -40,13 +40,45 @@ class artifactory(
   $backup_path      = undef,
   $install_type     = 'package',
   $docker_img       = 'oss',
+
+  # for database config. for defaults see ...::db class.
+  $configure_db     = false,
+  $db_type          = undef,
+  $db_host          = undef,
+  $db_port          = undef,
+  $db_user          = undef,
+  $db_user_password = undef,
+  $db_name          = undef,
+  $db_driver_jdbc   = undef,
+
+  # manually specify db settings (only for configure_db => true)
+  $db_url           = undef,
+  $db_driver        = undef,
 ) inherits artifactory::params {
 
   validate_re($install_type, '^(package|docker)$',
     "artifactory::install_type must be (package/docker) - not '${install_type}'")
 
   class { "::artifactory::${install_type}::install": } ->
-  class { "::artifactory::${install_type}::config": } ->
+  class { "::artifactory::${install_type}::config":
+    before  => Class["::artifactory::${install_type}::service"],
+  }
+
+  if $configure_db {
+    class { '::artifactory::db':
+      db_type           => $db_type,
+      db_host           => $db_host,
+      db_port           => $db_port,
+      db_user           => $db_user,
+      db_user_password  => $db_user_password,
+      db_name           => $db_name,
+      db_driver_jdbc    => $db_driver_jdbc,
+
+      db_url            => $db_url,
+      db_driver         => $db_driver,
+    }
+  }
+
   class { "::artifactory::${install_type}::service": }
 
 }

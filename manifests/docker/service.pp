@@ -13,7 +13,7 @@ class artifactory::docker::service inherits artifactory::params {
     default => $::artifactory::docker_img,
   }
 
-  $basedir = '/var/docker-artifactory'
+  $basedir = $::artifactory::params::docker_mount_base
 
   # this is always the same for docker based mounts
   # format: LOCAL_DIR : DIR_IN_CONTAINER
@@ -23,6 +23,22 @@ class artifactory::docker::service inherits artifactory::params {
     "${basedir}/backup:${::artifactory::params::std_backup_path}",
     "${basedir}/etc:${::artifactory::params::std_etc_path}",
   ]
+
+  if $::artifactory::configure_db {
+    # it's always "on_host:in_container"
+    $driver_file_host = $::artifactory::db::db_driver_jdbc
+    $driver_file_name = basename($driver_file_host)
+    $driver_file_dckr = "${::artifactory::params::artifactory_base}/tomcat/lib/${driver_file_name}"
+
+    $use_volume_mounts = concat($volume_mounts,
+      [
+        "${driver_file_host}:${driver_file_dckr}",
+      ])
+
+  } else {
+    $use_volume_mounts = $volume_mounts
+  }
+
 
   file { $basedir:
     ensure  => 'directory',
@@ -39,12 +55,14 @@ class artifactory::docker::service inherits artifactory::params {
     mode    => '0777',
   } ->
 
+  File <| tag == 'artifactory_config_file' |> ~>
+
   # requires the master branch of garethr/docker to work properly on redhat
   # systems (actually to use systemd integration on redhat systems)
   docker::run { $use_image:
     image             => $use_image,
     ports             => [ '80:80', '8081:8081', '443:443', '5001:5001', '5002:5002', ],
-    volumes           => $volume_mounts,
+    volumes           => $use_volume_mounts,
     extra_parameters  => ['--restart=always'],
     tag               => 'artifactory_service',
   }

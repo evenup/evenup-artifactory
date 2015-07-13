@@ -13,6 +13,8 @@ class artifactory::package::service {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
+  File <| tag == 'artifactory_config_file' |> ~>
+
   service { 'artifactory':
     ensure  => running,
     enable  => true,
