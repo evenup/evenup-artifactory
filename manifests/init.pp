@@ -40,6 +40,7 @@ class artifactory(
   $backup_path      = undef,
   $install_type     = 'package',
   $docker_img       = 'oss',
+  $docker_run_prms  = {},
 
   # for database config. for defaults see ...::db class.
   $configure_db     = false,

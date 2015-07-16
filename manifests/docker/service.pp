@@ -56,15 +56,19 @@ class artifactory::docker::service inherits artifactory::params {
   } ->
 
   File <| tag == 'artifactory_config_file' |> ~>
+  ::Docker::Run<| tag == 'artifactory_service' |>
 
   # requires the master branch of garethr/docker to work properly on redhat
   # systems (actually to use systemd integration on redhat systems)
-  docker::run { $use_image:
-    image             => $use_image,
-    ports             => [ '80:80', '8081:8081', '443:443', '5001:5001', '5002:5002', ],
-    volumes           => $use_volume_mounts,
-    extra_parameters  => ['--restart=always'],
-    tag               => 'artifactory_service',
+  $runme = {
+    'artifactory_service' => {
+      'image'             => $use_image,
+      'ports'             => [ '80:80', '8081:8081', '443:443', '5001:5001', '5002:5002', ],
+      'volumes'           => $use_volume_mounts,
+      'tag'               => 'artifactory_service',
+    }
   }
+
+  create_resources('::docker::run', $runme, $::artifactory::docker_run_prms)
 
 }
