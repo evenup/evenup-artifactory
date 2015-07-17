@@ -13,6 +13,13 @@
 #   String of comman seperated hostnames or array of hostnames.
 #   Default: artifactory
 #
+# [*docker_img*]
+#   Either 'oss', 'pro' or an actual "fully qualified" docker image path.
+#   'oss' will use the official artifactory open source docker image, 'pro'
+#   the official enterprise image (for which you need a license). If you
+#   provide your own docker image you can just enter the image path here.
+#   Default: artifactory
+#
 #
 # === Examples
 #
@@ -32,13 +39,13 @@ class artifactory(
   $data_path        = $::artifactory::params::std_data_path,
   $backup_path      = undef,
   $install_type     = 'package',
-  $docker_img_type  = 'oss',
+  $docker_img       = 'oss',
 ) inherits artifactory::params {
 
   include ::java
 
-  validate_re($install_type, '^(package)$',
-    "artifactory::install_type must be 'package' - not '${install_type}'")
+  validate_re($install_type, '^(package|docker)$',
+    "artifactory::install_type must be (package/docker) - not '${install_type}'")
 
   class { "::artifactory::${install_type}::install": } ->
   class { "::artifactory::${install_type}::config": } ->
