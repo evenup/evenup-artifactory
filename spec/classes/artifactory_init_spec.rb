@@ -5,8 +5,8 @@ describe 'artifactory', :type => :class do
   let(:facts) { { :concat_basedir => '/var/lib/puppet/concat' } }
 
   it { should create_class('artifactory') }
-  it { should contain_class('artifactory::install') }
-  it { should contain_class('artifactory::config') }
-  it { should contain_class('artifactory::service') }
+  it { should contain_class('artifactory::package::install') }
+  it { should contain_class('artifactory::package::config') }
+  it { should contain_class('artifactory::package::service') }
 
 end
