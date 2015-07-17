@@ -92,6 +92,7 @@
 # === Authors
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
+# * Axel Bock <mailto:mr.axel.bock@gmail.com>
 #
 class artifactory(
   $ensure           = 'latest',
