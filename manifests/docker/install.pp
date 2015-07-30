@@ -32,4 +32,14 @@ class artifactory::docker::install {
     image_tag => $use_tag,
   }
 
+
+  if $::artifactory::ha_setup == false {
+    # the one dir not created by the artifactory::install class.
+    $basedir = $::artifactory::ha_cluster_home
+    file { "${basedir}/logs":
+      ensure  => 'directory',
+      mode    => '0777',
+    }
+  }
+
 }

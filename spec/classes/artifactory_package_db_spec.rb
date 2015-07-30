@@ -8,7 +8,7 @@ describe 'artifactory' do
 
   let(:pre_condition) { 'class java{}' }
 
-  let(:docker_mount_base)     { '/var/docker-artifactory' }
+  let(:mount_base)            { '/var/artifactory' }
 
   let(:artifactory_home)      { '/var/opt/jfrog/artifactory' }
   let(:art_etc)               { "#{artifactory_home}/etc" }
@@ -16,7 +16,7 @@ describe 'artifactory' do
   let(:art_data)              { "#{artifactory_home}/data" }
   let(:art_tomcat_lib)        { "#{artifactory_home}/tomcat/lib" }
   let(:storage_props)         { "#{art_etc}/storage.properties" }
-  let(:storage_props_docker)  { "#{docker_mount_base}/storage.properties" }
+  let(:storage_props_docker)  { "#{mount_base}/storage.properties" }
 
 
   context 'postgresql with package install' do

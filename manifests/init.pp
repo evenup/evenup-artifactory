@@ -95,35 +95,60 @@
 # * Axel Bock <mailto:mr.axel.bock@gmail.com>
 #
 class artifactory(
-  $ensure           = 'latest',
-  $package_provider = undef,
-  $package_source   = undef,
-  $ajp_port         = 8019,
-  $data_path        = $::artifactory::params::std_data_path,
-  $backup_path      = undef,
-  $install_type     = 'package',
-  $docker_img       = 'oss',
-  $docker_run_prms  = {},
+  $ensure                   = 'latest',
+  $package_provider         = undef,
+  $package_source           = undef,
+  $ajp_port                 = 8019,
+  $data_path                = $::artifactory::params::std_data_path,
+  $backup_path              = undef,
+  $install_type             = 'package',
+  $docker_img               = 'oss',
+  $docker_run_prms          = {},
+
+  # if you have a license, set one of this
+  $license_source           = undef,
+  $license_content          = undef,
+
+  # do high availability setup
+  $ha_setup                 = false,
+  $ha_primary_node          = undef,
+  $ha_security_token        = undef,
+  $ha_membership_port       = 10001,
+  $ha_cluster_home          = $::artifactory::params::mount_base,
 
   # for database config. for defaults see ...::db class.
-  $configure_db     = false,
-  $db_type          = undef,
-  $db_host          = undef,
-  $db_port          = undef,
-  $db_user          = undef,
-  $db_user_password = undef,
-  $db_name          = undef,
-  $db_driver_jdbc   = undef,
+  $configure_db             = false,
+  $db_type                  = undef,
+  $db_host                  = undef,
+  $db_port                  = undef,
+  $db_user                  = undef,
+  $db_user_password         = undef,
+  $db_name                  = undef,
+  $db_driver_jdbc           = undef,
 
   # manually specify db settings (only for configure_db => true)
-  $db_url           = undef,
-  $db_driver        = undef,
+  $db_url                   = undef,
+  $db_driver                = undef,
 ) inherits artifactory::params {
 
   validate_re($install_type, '^(package|docker)$',
     "artifactory::install_type must be (package/docker) - not '${install_type}'")
 
+  if $ha_setup and $ha_primary_node == undef {
+    fail('artifactory: for $ha_setup you must set $ha_primary_node!')
+  }
+
+  if $ha_setup and $ha_security_token == undef {
+    fail('artifactory: for $ha_setup you must set $ha_security_token!')
+  }
+
+  if $license_source != undef and $license_content != undef {
+    fail('artifactory: set ONE of $license_source or $license_content!')
+  }
+
+  class { "::artifactory::install": } ->
   class { "::artifactory::${install_type}::install": } ->
+  class { "::artifactory::config": } ->
   class { "::artifactory::${install_type}::config":
     before  => Class["::artifactory::${install_type}::service"],
   }

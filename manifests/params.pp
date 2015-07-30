@@ -9,7 +9,7 @@ class artifactory::params (
     $artifactory_base       = '/var/opt/jfrog/artifactory',
     $docker_oss_img_src     = 'jfrog-docker-registry.bintray.io/artifactory/artifactory-oss',
     $docker_pro_img_src     = 'jfrog-docker-registry.bintray.io/artifactory/artifactory-pro',
-    $docker_mount_base      = '/var/docker-artifactory',
+    $mount_base             = '/var/artifactory',
 ) {
 
     $std_user_home    = $artifactory_base

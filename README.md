@@ -73,16 +73,16 @@ When installed as a docker container, currently the module depends on a modified
 
 When using the docker image, the artifactory data directories /in/ the container will be mounted on the parent host (*not* in another docker container!). The reason for this is to be able to switch to a HA scenario, where multiple artifactory instances share the same data located on an NFS share. This is not possible with docker volume mounts.
 
-The mount point can be configured using the `artifactory::params` class, and is by default `/var/docker-artifactory`.
+The mount point can be configured using the `artifactory::params` class, and is by default `/var/artifactory`.
 
 ... below which the following mounts will be set up for the container:
 
-| (on host)                        | (in container)             |
-| -------------------------------- | -------------------------- |
-| `/var/docker-artifactory/data`   | `$ARTIFACTORY_HOME/data`   |
-| `/var/docker-artifactory/logs`   | `$ARTIFACTORY_HOME/logs`   |
-| `/var/docker-artifactory/backup` | `$ARTIFACTORY_HOME/backup` |
-| `/var/docker-artifactory/etc`    | `$ARTIFACTORY_HOME/etc`    |
+| (on host)                         | (in container)             |
+| --------------------------------- | -------------------------- |
+| `/var/artifactory/data`           | `$ARTIFACTORY_HOME/data`   |
+| `/var/artifactory/logs`           | `$ARTIFACTORY_HOME/logs`   |
+| `/var/artifactory/backup`         | `$ARTIFACTORY_HOME/backup` |
+| `/var/artifactory/etc`            | `$ARTIFACTORY_HOME/etc`    |
 
 
 ## Database configuration

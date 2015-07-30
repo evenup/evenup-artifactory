@@ -29,6 +29,10 @@ class artifactory::db (
   validate_re($db_type, "^(${valid_db_types})\$",
     "Unsupported db type '${db_type}': must be one of '${valid_db_types}'")
 
+  $inst_type = $::artifactory::install_type
+  $ha_setup  = $::artifactory::ha_setup
+
+
   if $db_port != undef {
     $use_db_port = $db_port
   } else {
@@ -63,50 +67,35 @@ class artifactory::db (
   }
 
   if $db_driver_jdbc != undef {
-
     $check_exec_title = "jdbc driver file not found: '${db_driver_jdbc}'"
-
     File <| tag == 'artifactory_config_file' |> ->
-
     exec { $check_exec_title:
       command => 'bash -c false',
       unless  => "test -f '${db_driver_jdbc}'",
       path    => '/bin:/usr/bin',
     }
-
     Exec[$check_exec_title] ->
     ::Docker::Run <| tag == 'artifactory_service' |>
-
-  }
-
-  $inst_type =  $::artifactory::install_type
-  case $inst_type {
-
-    'package': {
-      $cfg_file = "${::artifactory::params::artifactory_base}/etc/storage.properties"
+    if $inst_type == 'package' {
       $drv_path = "${::artifactory::params::artifactory_base}/tomcat/lib"
       $drv_name = basename($db_driver_jdbc)
-      if $db_driver_jdbc != undef {
-        exec { 'copy jdbc driver file':
-          command => "cp '${db_driver_jdbc}' '${drv_path}'",
-          unless  => "test -f '${drv_path}/${drv_name}'",
-          path    => '/usr/bin:/bin',
-          require => Exec[$check_exec_title],
-        } ~>
-        Service <| tag == 'artifactory_service' |>
-      }
+      exec { 'copy jdbc driver file':
+        command => "cp '${db_driver_jdbc}' '${drv_path}'",
+        unless  => "test -f '${drv_path}/${drv_name}'",
+        path    => '/usr/bin:/bin',
+        require => Exec[$check_exec_title],
+      } ~>
+      Service <| tag == 'artifactory_service' |>
     }
+  }
 
-    'docker': {
-      # out of container, on host
-      $docker_mount_base = $::artifactory::params::docker_mount_base
-      $cfg_file = "${docker_mount_base}/etc/storage.properties"
+
+  $cfg_file = $ha_setup ? {
+    true    => "${::artifactory::ha_cluster_home}/ha-etc/storage.properties",
+    default => $inst_type ? {
+      'package' => "${::artifactory::params::std_etc_path}/storage.properties",
+      'docker'  => "${::artifactory::ha_cluster_home}/etc/storage.properties",
     }
-
-    default: {
-      fail("Unsupported install type '${inst_type}' for ::artifactory::db")
-    }
-
   }
 
   # normal permissions _should_ be 0644. If we set permissions and the

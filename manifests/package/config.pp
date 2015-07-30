@@ -26,4 +26,32 @@ class artifactory::package::config (
     notify  => Class['artifactory::package::service'],
   }
 
+
+  # license
+
+  if defined(File['/etc/artifactory/artifactory.lic']) {
+
+    file { "${::artifactory::params::std_etc_path}/artifactory.lic":
+      ensure  => 'link',
+      target  => '/etc/artifactory/artifactory.lic',
+      tag     => 'artifactory_config_file',
+    }
+
+  }
+
+
+  # HA config
+
+  if $::artifactory::ha_setup == true {
+
+    # link to ha-node.properties.FQDN in /etc/artifactory
+    file { "${::artifactory::params::std_etc_path}/ha-node.properties":
+      ensure  => 'link',
+      target  => $::artifactory::config::haprops,
+      tag     => 'artifactory_config_file',
+      require => File[$::artifactory::config::haprops],
+    }
+
+  }
+
 }
