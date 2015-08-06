@@ -2,6 +2,7 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
+require 'metadata-json-lint/rake_task'
 
 begin
   require 'puppet_blacksmith/rake_tasks'
@@ -21,7 +22,6 @@ PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{
 PuppetLint.configuration.send('relative')
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
-PuppetLint.configuration.send('disable_arrow_alignment')
 PuppetSyntax.exclude_paths = exclude_paths
 
 desc "Run acceptance tests"
