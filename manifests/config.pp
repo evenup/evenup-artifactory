@@ -38,6 +38,7 @@ class artifactory::config {
 
     # ha-node.properties - placed in $CLUSTER_HOME
 
+    $context_url = $::artifactory::ha_context_url
     $haprops = "${basedir}/ha-node.properties.${::fqdn}"
     file { $haprops:
       ensure  => 'present',

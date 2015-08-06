@@ -19,4 +19,6 @@ class artifactory::params (
     $std_logs_path    = "${artifactory_base}/logs"
     $std_backup_path  = "${artifactory_base}/backup"
 
+    $std_context_url  = "http://${::ipaddress}:8081/artifactory"
+
 }

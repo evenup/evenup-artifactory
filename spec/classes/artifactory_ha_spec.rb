@@ -87,6 +87,20 @@ describe 'artifactory' do
       }
     end
 
+    context 'with custom context url' do
+      let(:params){{
+        :install_type       => 'docker',
+        :ha_setup           => true,
+        :ha_security_token  => '1234',
+        :ha_primary_node    => true,
+        :ha_context_url     => 'goobahyah'
+      }}
+      it {
+        should contain_file(ha_node_file).
+        with_content(/context.url=goobahyah\n/)
+      }
+    end
+
   end
 
 

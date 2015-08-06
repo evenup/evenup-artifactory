@@ -115,6 +115,7 @@ class artifactory(
   $ha_security_token        = undef,
   $ha_membership_port       = 10001,
   $ha_cluster_home          = $::artifactory::params::mount_base,
+  $ha_context_url           = $::artifactory::params::std_context_url,
 
   # for database config. for defaults see ...::db class.
   $configure_db             = false,
