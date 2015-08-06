@@ -1,0 +1,5 @@
+node.id=<%= @hostname %>
+cluster.home=<%= scope.lookupvar('::artifactory::ha_cluster_home') %>
+context.url=<%= @context_url %>
+membership.port=<%= scope.lookupvar('::artifactory::ha_membership_port') %>
+primary=<%= scope.lookupvar('::artifactory::ha_primary_node') %>

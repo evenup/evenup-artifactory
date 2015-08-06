@@ -1,7 +1,9 @@
 fixtures:
   forge_modules:
-    stdlib: 
+    stdlib:
       repo: "puppetlabs/stdlib"
-      ref: "3.2.0"
+      ref: "4.6.0"
   symlinks:
     artifactory: "#{source_dir}"
+  repositories:
+    docker: git@github.com:garethr/garethr-docker.git

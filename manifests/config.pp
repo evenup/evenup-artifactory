@@ -1,27 +1,60 @@
+#
+#
 # == Class: artifactory::config
 #
-# This class configures artifactory.  It should not be called directly
+# Class for configuration common to package and docker installation types.
 #
 #
-# === Authors
-#
-# * Justin Lambert <mailto:jlambert@letsevenup.com>
-#
-class artifactory::config (
-  $ajp_port = $::artifactory::ajp_port,
-){
+class artifactory::config {
 
-  if $caller_module_name != $module_name {
-    fail("Use of private class ${name} by ${caller_module_name}")
+  # general configuration file directory
+
+  file { '/etc/artifactory':
+    ensure  => 'directory',
   }
 
-  file { '/opt/jfrog/artifactory/tomcat/conf/server.xml':
-    ensure  => file,
-    owner   => artifactory,
-    group   => artifactory,
-    mode    => '0444',
-    content => template('artifactory/server.xml.erb'),
-    notify  => Class['artifactory::service'],
+
+  # license configuration - placed in /etc/artifactory
+
+  $lic_src = $::artifactory::license_source
+  $lic_cnt = $::artifactory::license_content
+
+  if $lic_src != undef or $lic_cnt != undef {
+    file { '/etc/artifactory/artifactory.lic':
+      ensure  => 'present',
+      content => $lic_cnt,
+      source  => $lic_src,
+      tag     => 'artifactory_config_file',
+    }
+  }
+
+
+  # HA config
+
+  if $::artifactory::ha_setup == true {
+
+    $basedir = $::artifactory::ha_cluster_home
+
+
+    # ha-node.properties - placed in $CLUSTER_HOME
+
+    $context_url = $::artifactory::ha_context_url
+    $haprops = "${basedir}/ha-node.properties.${::fqdn}"
+    file { $haprops:
+      ensure  => 'present',
+      content => template('artifactory/ha-node.properties.erb'),
+      tag     => 'artifactory_config_file',
+    }
+
+
+    # cluster.properties - placed in $CLUSTER_HOME/ha-etc
+
+    file { "${basedir}/ha-etc/cluster.properties":
+      ensure  => 'present',
+      content => "security.token=${::artifactory::ha_security_token}\n",
+      tag     => 'artifactory_config_file',
+    }
+
   }
 
 }
