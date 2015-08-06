@@ -156,16 +156,16 @@ class artifactory(
 
   if $configure_db {
     class { '::artifactory::db':
-      db_type           => $db_type,
-      db_host           => $db_host,
-      db_port           => $db_port,
-      db_user           => $db_user,
-      db_user_password  => $db_user_password,
-      db_name           => $db_name,
-      db_driver_jdbc    => $db_driver_jdbc,
+      db_type          => $db_type,
+      db_host          => $db_host,
+      db_port          => $db_port,
+      db_user          => $db_user,
+      db_user_password => $db_user_password,
+      db_name          => $db_name,
+      db_driver_jdbc   => $db_driver_jdbc,
 
-      db_url            => $db_url,
-      db_driver         => $db_driver,
+      db_url           => $db_url,
+      db_driver        => $db_driver,
     }
   }
 

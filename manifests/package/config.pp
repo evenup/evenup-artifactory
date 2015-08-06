@@ -32,9 +32,9 @@ class artifactory::package::config (
   if defined(File['/etc/artifactory/artifactory.lic']) {
 
     file { "${::artifactory::params::std_etc_path}/artifactory.lic":
-      ensure  => 'link',
-      target  => '/etc/artifactory/artifactory.lic',
-      tag     => 'artifactory_config_file',
+      ensure => 'link',
+      target => '/etc/artifactory/artifactory.lic',
+      tag    => 'artifactory_config_file',
     }
 
   }

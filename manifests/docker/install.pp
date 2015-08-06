@@ -37,8 +37,8 @@ class artifactory::docker::install {
     # the one dir not created by the artifactory::install class.
     $basedir = $::artifactory::ha_cluster_home
     file { "${basedir}/logs":
-      ensure  => 'directory',
-      mode    => '0777',
+      ensure => 'directory',
+      mode   => '0777',
     }
   }
 

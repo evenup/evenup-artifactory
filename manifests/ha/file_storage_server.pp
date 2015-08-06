@@ -52,15 +52,15 @@ class artifactory::ha::file_storage_server (
   }
 
   exec { "mkdir -p \"${file_storage_path}\"":
-    path    => '/usr/bin:/bin',
-    unless  => "test -d \"${file_storage_path}\"",
+    path   => '/usr/bin:/bin',
+    unless => "test -d \"${file_storage_path}\"",
   } ->
 
   file { $file_storage_path:
-    ensure  => 'directory',
-    mode    => $storage_perms,
-    owner   => $storage_user,
-    group   => $storage_group,
+    ensure => 'directory',
+    mode   => $storage_perms,
+    owner  => $storage_user,
+    group  => $storage_group,
   } ->
 
   ::nfs::server::export { $file_storage_path:
