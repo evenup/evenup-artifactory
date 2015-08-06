@@ -68,6 +68,11 @@ describe 'artifactory' do
         :ha_primary_node    => true,
       }}
       it {
+        should contain_file("#{mount_base}/ha-etc").with({:ensure => 'directory'})
+        should contain_file("#{mount_base}/ha-data").with({:ensure => 'directory'})
+        should contain_file("#{mount_base}/ha-backup").with({:ensure => 'directory'})
+      }
+      it {
         should contain_file("#{mount_base}/ha-etc/cluster.properties").with_content("security.token=1234\n").
         that_notifies('Docker::Run[artifactory_service]')
       }
