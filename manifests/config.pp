@@ -42,7 +42,7 @@ class artifactory::config {
     $haprops = "${basedir}/ha-node.properties.${::fqdn}"
     file { $haprops:
       ensure  => 'present',
-      content => template("artifactory/ha-node.properties.erb"),
+      content => template('artifactory/ha-node.properties.erb'),
       tag     => 'artifactory_config_file',
     }
 

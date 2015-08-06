@@ -147,9 +147,9 @@ class artifactory(
     fail('artifactory: set ONE of $license_source or $license_content!')
   }
 
-  class { "::artifactory::install": } ->
+  class { '::artifactory::install': } ->
   class { "::artifactory::${install_type}::install": } ->
-  class { "::artifactory::config": } ->
+  class { '::artifactory::config': } ->
   class { "::artifactory::${install_type}::config":
     before  => Class["::artifactory::${install_type}::service"],
   }

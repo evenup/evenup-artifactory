@@ -9,9 +9,9 @@ class artifactory::install {
 
   $basedir      = $::artifactory::ha_cluster_home
   $create_dirs  = [
-    "etc",
-    "data",
-    "backup"
+    'etc',
+    'data',
+    'backup'
   ]
 
   if $::artifactory::ha_setup == true {
