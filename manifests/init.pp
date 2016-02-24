@@ -26,6 +26,8 @@
 #
 class artifactory(
   $ensure           = 'latest',
+  $package_name     = 'artifactory',
+  $service_name     = 'artifactory',
   $package_provider = undef,
   $package_source   = undef,
   $ajp_port         = 8019,

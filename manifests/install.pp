@@ -32,6 +32,7 @@ class artifactory::install {
 
   package { 'artifactory':
     ensure   => $::artifactory::ensure,
+    name     => $::artifactory::package_name,
     provider => $::artifactory::package_provider,
     source   => $::artifactory::package_source,
     notify   => Class['artifactory::service'],
