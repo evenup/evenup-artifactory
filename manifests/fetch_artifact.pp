@@ -58,38 +58,34 @@ define artifactory::fetch_artifact (
   $version,
   $install_path,
   $format,
-  $path        = undef,
+  $path        = '',
   $server      = 'http://artifactory',
   $repo        = 'libs-release-local',
-  $filename    = undef,
-  $source_file = undef,
+  $filename    = '',
+  $source_file = ''
 ){
 
-  if $source_file {
-    $sourcefile_real = $source_file
-  } else {
-    $sourcefile_real = "${project}-${version}.${format}"
+  if ( $source_file == '' and $format == '' ) {
+    fail('source_file or format is required')
   }
 
-  if $filename {
-    $filename_real = $filename
-  } else {
-    $filename_real = "${project}-${version}.${format}"
+  $sourcefile_real = $source_file ? {
+    ''      => "${project}-${version}.${format}",
+    default => $source_file
   }
 
-  if ( $path ) {
-    $fetch_url = "${server}/artifactory/${repo}/${path}/${project}/${version}/${sourcefile_real}"
-  } else {
-    $fetch_url = "${server}/artifactory/${repo}/${project}/${version}/${sourcefile_real}"
+  $filename_real = $filename ? {
+    ''      => "${project}-${version}.${format}",
+    default => $filename
   }
 
-  $full_path = "${install_path}/${filename_real}"
-
-  exec { "artifactory_fetch_${name}":
-    command   => "curl -o ${full_path} ${fetch_url}",
-    cwd       => $install_path,
-    creates   => $full_path,
-    path      => '/usr/bin:/bin',
-    logoutput => on_failure;
+  artifactory::fetch_artifact_generic {"fetch_artifact_generic_${name}":
+    install_path => $install_path,
+    base_path => "${server}/artifactory",
+    repo => $repo,
+    filename => $filename_real,
+    source_file => $sourcefile_real,
+    layout => "${path}/${project}/${version}"
   }
+
 }
