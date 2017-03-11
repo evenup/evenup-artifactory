@@ -17,8 +17,7 @@ class artifactory::service {
     ensure   => running,
     name     => $::artifactory::service_name,
     enable   => true,
-    provider => redhat,
-    require  => Class['java'],
+    require  => [ Class['java'], File[$::artifactory::data_path], File[$::artifactory::home_dir] ],
   }
 
 }
