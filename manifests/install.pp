@@ -13,15 +13,36 @@ class artifactory::install {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  File {
-    require => Package['artifactory'],
+  if $::osfamily == 'Debian' {
+    apt::key { 'artifactory':
+      key        => 'A3D085F542F740BBD7E3A2846B219DCCD7639232',
+      key_source => 'https://bintray.com/user/downloadSubjectPublicKey?username=jfrog',
+    }
+
+    apt::source { 'artifactory-oss':
+      comment     => 'Atifactory open source repository',
+      location    => 'https://bintray.com/artifact/download/jfrog/artifactory-debs',
+      repos       => 'main',
+      include_deb => 'true',
+      key         => 'A3D085F542F740BBD7E3A2846B219DCCD7639232',
+      key_server  => 'keyserver.ubuntu.com',
+    }
+
+    apt::source { 'artifactory-pro':
+      comment     => 'Atifactory Pro repository',
+      location    => 'https://jfrog.bintray.com/artifactory-pro-debs',
+      repos       => 'main',
+      include_deb => 'true',
+      key         => 'A3D085F542F740BBD7E3A2846B219DCCD7639232',
+      key_server  => 'pgp.mit.edu',
+    }
   }
 
   user { 'artifactory':
     ensure => 'present',
     system => true,
     shell  => '/bin/bash',
-    home   => '/var/opt/jfrog/artifactory',
+    home   => $::artifactory::home_dir,
     gid    => 'artifactory',
   }
 
@@ -36,20 +57,28 @@ class artifactory::install {
     provider => $::artifactory::package_provider,
     source   => $::artifactory::package_source,
     notify   => Class['artifactory::service'],
-    require  => [ User['artifactory'], Group['artifactory'] ],
+    require  => [ User['artifactory'], Group['artifactory'], Exec['apt_update'] ],
   }
 
-  if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' {
-    file { $::artifactory::data_path:
+  file {$::artifactory::home_dir:
+    require => Package['artifactory'],
+    ensure  => directory,
+    recurse => true,
+  }
+
+  if $::artifactory::data_path != "${::artifactory::home_dir}/data" {
+    File <| title == $::artifactory::data_path |> {
       ensure => directory,
       mode   => '0775',
       owner  => artifactory,
       group  => artifactory,
     }
 
-    file { '/var/opt/jfrog/artifactory/data':
+    file { "${::artifactory::home_dir}/data":
       ensure => link,
       target => $::artifactory::data_path,
+      owner  => artifactory,
+      group  => artifactory,
     }
   }
 
@@ -62,4 +91,19 @@ class artifactory::install {
     }
   }
 
+  if $::artifactory::db_type == 'postgresql' {
+    file { "${::artifactory::home_dir}/tomcat/lib":
+      ensure => directory,
+      mode   => '0775',
+      owner  => artifactory,
+      group  => artifactory,
+    } ->
+    exec { 'Download java postgresql drivrer':
+      cwd     => "${::artifactory::home_dir}/tomcat/lib",
+      path    => ['/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin'],
+      command => "wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P ${::artifactory::home_dir}/tomcat/lib/",
+      notify  => Service["artifactory"],
+      creates => "${::artifactory::home_dir}/tomcat/lib/postgresql-9.4.1212.jar",
+    }
+  }
 }
