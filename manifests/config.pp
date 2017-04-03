@@ -25,7 +25,7 @@ class artifactory::config (
   }
 
   if $::artifactory::db_type == 'postgresql' {
-    file {"${::artifactory::home_dir}/etc/storage.properties":
+    file {"${::artifactory::home_dir}/etc/db.properties":
       ensure  => file,
       path    => "${::artifactory::home_dir}/etc/storage.properties",
       content => template('artifactory/storage.properties.pg.erb'),
@@ -40,7 +40,7 @@ class artifactory::config (
   }
 
   if $::artifactory::config_import_xml {
-    file   {   '/var/opt/jfrog/artifactory/etc/artifactory.config.import.xml':
+    file   {   "${::artifactory::home_dir}/etc/artifactory.config.import.xml":
       ensure  =>   file,
       content =>   $::artifactory::config_import_xml,
       owner   =>   artifactory,
@@ -60,7 +60,7 @@ class artifactory::config (
   }
 
   if $::artifactory::license {
-    file { '/var/opt/jfrog/artifactory/etc/artifactory.lic':
+    file { "${::artifactory::home_dir}/etc/artifactory.lic":
       content => $::artifactory::license,
       notify  => Service['artifactory'],
       owner   => 'artifactory',

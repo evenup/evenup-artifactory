@@ -64,6 +64,8 @@ class artifactory::install {
     require => Package['artifactory'],
     ensure  => directory,
     recurse => true,
+    owner   => artifactory,
+    group   => artifactory,
   }
 
   if $::artifactory::data_path != "${::artifactory::home_dir}/data" {
