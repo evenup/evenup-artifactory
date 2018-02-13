@@ -35,10 +35,15 @@ class artifactory(
   $backup_path      = undef,
 ) {
 
-  include ::java
+  Class['::java']
+  -> Class['::artifactory::install']
+  -> Class['::artifactory::config']
+  -> Class['::artifactory::service']
 
-  class { '::artifactory::install': } ->
-  class { '::artifactory::config': } ->
-  class { '::artifactory::service': }
+  contain '::java'
+  contain '::artifactory::install'
+  contain '::artifactory::config'
+  contain '::artifactory::service'
+
 
 }

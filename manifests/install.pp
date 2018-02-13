@@ -13,10 +13,6 @@ class artifactory::install {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
-  File {
-    require => Package['artifactory'],
-  }
-
   user { 'artifactory':
     ensure => 'present',
     system => true,
@@ -45,11 +41,16 @@ class artifactory::install {
       mode   => '0775',
       owner  => artifactory,
       group  => artifactory,
+      before => Package['artifactory'],
     }
 
     file { '/var/opt/jfrog/artifactory/data':
       ensure => link,
       target => $::artifactory::data_path,
+      before => [
+        Package['artifactory'],
+        File[$::artifactory::data_path],
+      ]
     }
   }
 
@@ -59,7 +60,7 @@ class artifactory::install {
       mode   => '0775',
       owner  => artifactory,
       group  => artifactory,
+      before => Package['artifactory'],
     }
   }
-
 }
