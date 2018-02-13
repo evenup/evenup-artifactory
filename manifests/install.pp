@@ -35,7 +35,7 @@ class artifactory::install {
     require  => [ User['artifactory'], Group['artifactory'] ],
   }
 
-  if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' {
+  if $::artifactory::data_path != '/var/opt/jfrog/artifactory/data' and $::artifactory::create_data_path {
     file { $::artifactory::data_path:
       ensure => directory,
       mode   => '0775',

@@ -33,6 +33,7 @@ class artifactory(
   $ajp_port         = 8019,
   $data_path        = '/var/opt/jfrog/artifactory/data',
   $backup_path      = undef,
+  $create_data_path = true,
 ) {
 
   Class['::java']
