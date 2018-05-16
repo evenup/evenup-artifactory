@@ -40,7 +40,7 @@ class artifactory::config (
       ensure  => file,
       path    => "${::artifactory::home_dir}/etc/db.properties",
       content => template('artifactory/storage.properties.pg.erb'),
-      notify  => Class['artifactory::service'],
+      # notify  => Class['artifactory::service'], # Arti replaces pwd with hash and it triggers restart
       owner   => artifactory,
       group   => artifactory,
     }
