@@ -63,9 +63,13 @@ class artifactory::install {
   file {$::artifactory::home_dir:
     require => Package['artifactory'],
     ensure  => directory,
-    recurse => true,
     owner   => artifactory,
     group   => artifactory,
+  }
+
+  exec { 'artifactory-home-dir-owner':
+    command => "/bin/chown -R -L artifactory:artifactory ${::artifactory::home_dir}",
+    require => File[$::artifactory::home_dir],
   }
 
   if $::artifactory::data_path != "${::artifactory::home_dir}/data" {
